@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>icon_email_hover</title>
+    <desc>Created with Sketch.</desc>
+    <g id="NANYA-HOME" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Nanya首頁正式中文" transform="translate(-1817.000000, -16.000000)">
+            <g id="keyvisual" transform="translate(0.000000, -5.000000)">
+                <g id="header">
+                    <g id="icon_email" transform="translate(1817.000000, 21.000000)">
+                        <g>
+                            <path d="M18,0 C27.9411255,0 36,8.0588745 36,18 C36,27.9411255 27.9411255,36 18,36 C8.0588745,36 0,27.9411255 0,18 C0,8.0588745 8.0588745,0 18,0 Z M9,13.0909091 L9,23.917246 C9,24.2642018 9.28781648,24.5454545 9.64286925,24.5454545 L26.3571307,24.5454545 C26.7121835,24.5454545 27,24.2642018 27,23.917246 L27,13.183887 L18.4056212,20.00735 C18.1687687,20.1968763 17.8279919,20.1968763 17.5911394,20.00735 L9,13.0909091 Z M26.0898135,11.4545455 L9.81818182,11.4545455 L17.954016,18.8181818 L26.1818182,11.4751757 C26.1517122,11.4655053 26.1209462,11.4586151 26.0898135,11.4545455 Z" id="Combined-Shape" fill="#303030"></path>
+                            <g id="mail" transform="translate(9.000000, 11.454545)"></g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
