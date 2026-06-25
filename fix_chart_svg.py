@@ -4,11 +4,11 @@ filepath = '/Users/mia/Desktop/0522南亞ESG 2026/static2025/tw/commitment_to_sd
 with open(filepath, 'r', encoding='utf-8') as f:
     lines = f.readlines()
 
-start_idx = 1553
-end_idx = 2179
+start_idx = 1574
+end_idx = 1885
 
-if '<svg width="1200"' in lines[start_idx] and '</svg>' in lines[end_idx]:
-    new_lines = lines[:start_idx] + ['            <img src="../img/svg/table__commitment-to-sdgs__section--result.svg" alt="南亞科技永續影響力評價結果">\n'] + lines[end_idx+1:]
+if '<svg width="942"' in lines[start_idx] and '</svg>' in lines[end_idx]:
+    new_lines = lines[:start_idx] + ['            <img src="../img/svg/chart__commitment-to-sdgs__env-impact__single-column-v.svg" alt="南亞科技產品規劃與規格演進">\n'] + lines[end_idx+1:]
     with open(filepath, 'w', encoding='utf-8') as f:
         f.writelines(new_lines)
     print("Replaced successfully")
