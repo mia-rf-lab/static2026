@@ -1235,16 +1235,89 @@ integrity-transparency  ">
       
       </div>
 
-      <div class="wrapper aos">
+      <div class="wrapper aos" id="chart-anim-wrapper">
         <div class="single-column-v">
           <img
             src="../img/svg/chart__integrity-transparency__anchor-5__single-column-v-2.svg"
             alt=""
             data-animate="fadeInUp"
             data-animate-delay=".2"
+            id="dynamic-chart-img"
           >
         </div>
       </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.getElementById('chart-anim-wrapper');
+            const img = document.getElementById('dynamic-chart-img');
+            if (!img) return;
+
+            // 嘗試透過 fetch 抓取 SVG 原始碼 (若在 file:// 協定下可能會被 CORS 阻擋，但上線後正常)
+            fetch(img.src)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(svgText => {
+                    const parser = new DOMParser();
+                    const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+                    const svgElement = svgDoc.documentElement;
+                    
+                    // 複製原本 img 的屬性到 svg 上
+                    svgElement.setAttribute('data-animate', img.getAttribute('data-animate'));
+                    svgElement.setAttribute('data-animate-delay', img.getAttribute('data-animate-delay'));
+                    svgElement.setAttribute('class', img.getAttribute('class') || '');
+                    
+                    // 找出所有代表「柱子」的元素
+                    // 深藍色柱子：fill="#0756AA"，淺藍色柱子：fill="url(...)" 且沒有 opacity 屬性
+                    const bars = svgElement.querySelectorAll('path[fill="#0756AA"], path[fill^="url"]:not([opacity])');
+                    
+                    // 找出柱子上的白色數字文字
+                    const texts = svgElement.querySelectorAll('path[fill="white"]');
+
+                    // 設定柱子初始狀態：縮放到 0，且從底部為基準
+                    bars.forEach(bar => {
+                        bar.style.transformOrigin = "bottom";
+                        bar.style.transformBox = "fill-box";
+                        bar.style.transform = "scaleY(0)";
+                        bar.style.transition = "transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1)";
+                    });
+
+                    // 設定文字初始狀態：透明度 0
+                    texts.forEach(txt => {
+                        txt.style.opacity = "0";
+                        txt.style.transition = "opacity 1s ease 1.5s"; // 延遲 1.5 秒等柱子快長完時再浮現
+                    });
+
+                    // 將 img 替換成 inline SVG
+                    img.replaceWith(svgElement);
+
+                    // 使用 IntersectionObserver 監聽，當滾動到圖表時觸發動畫
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                // 稍微延遲讓 fadeInUp 先跑
+                                setTimeout(() => {
+                                    bars.forEach(bar => {
+                                        bar.style.transform = "scaleY(1)";
+                                    });
+                                    texts.forEach(txt => {
+                                        txt.style.opacity = "1";
+                                    });
+                                }, 300);
+                                observer.disconnect();
+                            }
+                        });
+                    }, { threshold: 0.3 });
+                    
+                    observer.observe(wrapper);
+                })
+                .catch(err => {
+                    console.log('SVG fetch fallback (usually due to file:// protocol):', err);
+                    // 失敗時保持原樣 (原本的 img 會被正常載入)
+                });
+        });
+      </script>
     </section>
     </div>
 
@@ -1307,11 +1380,6 @@ integrity-transparency  ">
         <li>
           <a href="commitment_to_sdgs#sdg-16">
             <img src="../img/svg/icon__commitment-to-sdgs__section--tabs__achievement-16.svg" alt="">
-          </a>
-        </li>
-        <li>
-          <a href="commitment_to_sdgs#sdg-17">
-            <img src="../img/svg/icon__commitment-to-sdgs__section--tabs__achievement-17.svg" alt="">
           </a>
         </li>
     </ul>
