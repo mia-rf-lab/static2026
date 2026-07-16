@@ -2,7 +2,7 @@ import re
 
 html_file = "tw/materiality_analysis.html"
 full_svg_file = "img/svg/table__commitment-to-sdgs__section--tabulation.svg"
-tbody_svg_file = "img/svg/table__commitment-to-sdgs__section--tabulation__tbody.svg"
+tbody_svg_file = "img/svg/table__commitment-to-sdgs__section--tabulation.svg"
 
 with open(html_file, "r", encoding="utf-8") as f:
     html_content = f.read()
