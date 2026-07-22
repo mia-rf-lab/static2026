@@ -1152,16 +1152,77 @@ integrity-transparency  ">
       
       </div>
 
-      <div class="wrapper aos">
+      <div class="wrapper aos" id="chart-anim-wrapper">
         <div class="single-column-v">
           <img
             src="../img/svg/en__chart__integrity-transparency__anchor-5__single-column-v-2.svg"
             alt=""
             data-animate="fadeInUp"
             data-animate-delay=".2"
+            id="dynamic-chart-img"
           >
         </div>
       </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.getElementById('chart-anim-wrapper');
+            const img = document.getElementById('dynamic-chart-img');
+            if (!img) return;
+
+            fetch(img.src)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(svgText => {
+                    const parser = new DOMParser();
+                    const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+                    const svgElement = svgDoc.documentElement;
+                    
+                    svgElement.setAttribute('data-animate', img.getAttribute('data-animate'));
+                    svgElement.setAttribute('data-animate-delay', img.getAttribute('data-animate-delay'));
+                    svgElement.setAttribute('class', img.getAttribute('class') || '');
+                    
+                    const bars = svgElement.querySelectorAll('path[fill="#0756AA"], path[fill^="url"]:not([opacity])');
+                    const texts = svgElement.querySelectorAll('path[fill="white"]');
+
+                    bars.forEach(bar => {
+                        bar.style.transformOrigin = "bottom";
+                        bar.style.transformBox = "fill-box";
+                        bar.style.transform = "scaleY(0)";
+                        bar.style.transition = "transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1)";
+                    });
+
+                    texts.forEach(txt => {
+                        txt.style.opacity = "0";
+                        txt.style.transition = "opacity 1s ease 1.5s";
+                    });
+
+                    img.replaceWith(svgElement);
+
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                setTimeout(() => {
+                                    bars.forEach(bar => {
+                                        bar.style.transform = "scaleY(1)";
+                                    });
+                                    texts.forEach(txt => {
+                                        txt.style.opacity = "1";
+                                    });
+                                }, 300);
+                                observer.disconnect();
+                            }
+                        });
+                    }, { threshold: 0.3 });
+                    
+                    observer.observe(wrapper);
+                })
+                .catch(err => {
+                    console.log('SVG fetch fallback:', err);
+                });
+        });
+      </script>
     </section>
     </div>
 
