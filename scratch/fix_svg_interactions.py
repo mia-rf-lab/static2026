@@ -55,7 +55,7 @@ for line in svg_lines:
         continue
         
     if '<svg width=' in line:
-        line = line.replace('<svg width="1062" height="860"', '<svg width="1062" height="860" style="max-width: 1062px; margin: 0 auto; display: block;"')
+        line = line.replace('<svg width="1062" height="824"', '<svg width="1062" height="824" style="max-width: 1062px; margin: 0 auto; display: block;"')
     
     g_match = re.search(r'<g id="([^"]+)"', line)
     
@@ -99,7 +99,7 @@ for i, line in enumerate(html_lines):
         break
 
 if start_idx != -1 and end_idx != -1:
-    new_wrapper = """        <div class="matrix-chart" data-animate="fadeInUp" data-animate-delay=".4">
+    new_wrapper = """        <div class="matrix-chart" data-animate="fadeInUp" data-animate-delay=".4" style="max-width: 1062px; margin: 0 auto;">
             <span>Environmental topics</span>
             <span>Social topics</span>
             <span>Governance topics</span>
