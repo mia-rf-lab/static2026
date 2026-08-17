@@ -166,6 +166,7 @@ if ($('.js-timeline').length) {
 
     // Store Swiper setting in variable for reusing when windows resizing
     const timelineSwiperSetting = {
+      autoHeight: true,
       loop: false,
       slidesPerView: 1,
       spaceBetween: 60,
