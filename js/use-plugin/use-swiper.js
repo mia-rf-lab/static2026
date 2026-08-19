@@ -149,6 +149,16 @@ if ($('.js-timeline').length) {
   let timelineSwiper = null; // Create a temp variable
   let timelineSwiperInit = false; // Trigger => off(default)
 
+  // 重新計算高度後，額外加一點緩衝空間，避免瀏覽器縮放比例造成的次像素捨入
+  // 讓 offsetHeight 讀到的高度比實際內容矮 1px 左右，導致 overflow:hidden 把最後一行文字裁掉
+  function syncTimelineHeight(swiper) {
+    if (!swiper || !swiper.wrapperEl) return;
+    swiper.update();
+    swiper.updateAutoHeight();
+    const bufferedHeight = swiper.wrapperEl.offsetHeight + 24;
+    swiper.wrapperEl.style.height = bufferedHeight + 'px';
+  }
+
   function rwdTimelineSwiper() {
     let tablet = window.matchMedia('(max-width: 1023px)');
     let desktop = window.matchMedia('(min-width: 1024px)');
@@ -193,12 +203,11 @@ if ($('.js-timeline').length) {
       on: {
         init: function (swiper) {
           setTimeout(function () {
-            swiper.update();
-            swiper.updateAutoHeight(200);
+            syncTimelineHeight(swiper);
           }, 150);
         },
         slideChange: function (swiper) {
-          swiper.updateAutoHeight(200);
+          syncTimelineHeight(swiper);
         },
       },
     };
@@ -209,10 +218,7 @@ if ($('.js-timeline').length) {
         timelineSwiperInit = true; // 2. Turn it on
         timelineSwiper = new Swiper('.js-timeline', timelineSwiperSetting); // 3. Initialize swiper slider
       } else {
-        if (timelineSwiper && timelineSwiper.update) {
-          timelineSwiper.update();
-          timelineSwiper.updateAutoHeight();
-        }
+        syncTimelineHeight(timelineSwiper);
       }
     }
 
@@ -231,19 +237,13 @@ if ($('.js-timeline').length) {
   // 當自訂字型載入完成時重新校正高度 (避免 Windows / Mac 字型載入前後高度差問題)
   if (document.fonts) {
     document.fonts.ready.then(function () {
-      if (timelineSwiper && timelineSwiper.update) {
-        timelineSwiper.update();
-        timelineSwiper.updateAutoHeight(200);
-      }
+      syncTimelineHeight(timelineSwiper);
     });
   }
 
   // 視窗資源完整載入完成時再次確保更新
   $(window).on('load', function () {
-    if (timelineSwiper && timelineSwiper.update) {
-      timelineSwiper.update();
-      timelineSwiper.updateAutoHeight(200);
-    }
+    syncTimelineHeight(timelineSwiper);
   });
 
   $(document).ready(function() { // Add this row for new jQuery resize event snippet for a known bug that happened from iOS6 Safari.
@@ -257,9 +257,8 @@ if ($('.js-timeline').length) {
         windowWidth = $(window).width();
         // Do stuff below...
         rwdTimelineSwiper();
-      } else if (timelineSwiper && timelineSwiper.update) {
-        timelineSwiper.update();
-        timelineSwiper.updateAutoHeight();
+      } else {
+        syncTimelineHeight(timelineSwiper);
       }
     });
   });
