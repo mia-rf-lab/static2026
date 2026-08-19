@@ -146,7 +146,7 @@ if ( $('.js-materiality-analysis-propose').length ) {
 
 // 關注焦點 - 重大議題策略與績效(timeline)
 if ($('.js-timeline').length) {
-  let timelineSwiper = Swiper; // Create a temp variable
+  let timelineSwiper = null; // Create a temp variable
   let timelineSwiperInit = false; // Trigger => off(default)
 
   function rwdTimelineSwiper() {
@@ -171,6 +171,10 @@ if ($('.js-timeline').length) {
       slidesPerView: 1,
       spaceBetween: 60,
       grabCursor: true,
+      observer: true,
+      observeParents: true,
+      observeSlideChildren: true,
+      resizeObserver: true,
       pagination: {
         el: '.timeline-pagination',
         bulletActiveClass: 'active',
@@ -186,13 +190,29 @@ if ($('.js-timeline').length) {
         nextEl: ".timeline-next",
         prevEl: ".timeline-prev",
       },
-    }
+      on: {
+        init: function (swiper) {
+          setTimeout(function () {
+            swiper.update();
+            swiper.updateAutoHeight(200);
+          }, 150);
+        },
+        slideChange: function (swiper) {
+          swiper.updateAutoHeight(200);
+        },
+      },
+    };
 
     // Enable (for larger than 768px)
-    if(desktop.matches) {
+    if (desktop.matches) {
       if (!timelineSwiperInit) { // 1. If trigger is off
         timelineSwiperInit = true; // 2. Turn it on
         timelineSwiper = new Swiper('.js-timeline', timelineSwiperSetting); // 3. Initialize swiper slider
+      } else {
+        if (timelineSwiper && timelineSwiper.update) {
+          timelineSwiper.update();
+          timelineSwiper.updateAutoHeight();
+        }
       }
     }
 
@@ -201,11 +221,30 @@ if ($('.js-timeline').length) {
       if (timelineSwiperInit) { // 1. If trigger is on (如果沒有這個 if 判定， firefox 78.0.1 macOS 會報錯)
         timelineSwiperInit = false; // 2. Turn it off
         timelineSwiper.destroy(false, true); // 3. Destroy swiper slider, remove all swiper class, but not to delete Swiper instance(HTML elements)
+        timelineSwiper = null;
       }
     }
   }
 
   rwdTimelineSwiper(); // Fire once
+
+  // 當自訂字型載入完成時重新校正高度 (避免 Windows / Mac 字型載入前後高度差問題)
+  if (document.fonts) {
+    document.fonts.ready.then(function () {
+      if (timelineSwiper && timelineSwiper.update) {
+        timelineSwiper.update();
+        timelineSwiper.updateAutoHeight(200);
+      }
+    });
+  }
+
+  // 視窗資源完整載入完成時再次確保更新
+  $(window).on('load', function () {
+    if (timelineSwiper && timelineSwiper.update) {
+      timelineSwiper.update();
+      timelineSwiper.updateAutoHeight(200);
+    }
+  });
 
   $(document).ready(function() { // Add this row for new jQuery resize event snippet for a known bug that happened from iOS6 Safari.
     /* Store the window width */
@@ -218,6 +257,9 @@ if ($('.js-timeline').length) {
         windowWidth = $(window).width();
         // Do stuff below...
         rwdTimelineSwiper();
+      } else if (timelineSwiper && timelineSwiper.update) {
+        timelineSwiper.update();
+        timelineSwiper.updateAutoHeight();
       }
     });
   });

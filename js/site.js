@@ -12,4 +12,4 @@ import './modules/siteMenu.js';
 import './modules/smoothScrollByAnchor.js';
 import './modules/stickyThead.js';
 import './use-plugin/use-cookies.js';
-import './use-plugin/use-swiper.js?20240826';
+import './use-plugin/use-swiper.js?202608191200';
