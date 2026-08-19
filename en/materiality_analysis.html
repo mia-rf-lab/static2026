@@ -40,15 +40,6 @@
 
   <!-- Style Sheet -->
   <link href="../css/site.css?202508251954" rel="stylesheet" />
-  <style>
-    .matrix-chart svg a,
-    .matrix-chart svg a * {
-      cursor: pointer !important;
-    }
-  </style>
-
-
-
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WKF98151K0"></script>
   <script>
@@ -59,53 +50,70 @@
     gtag('config', 'G-WKF98151K0');
   </script>
 
-<style>
-/* Reset opacity of all text items when ANY span is hovered */
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:hover ~ svg a {
-    opacity: 0.2 !important;
-}
+  <style>
+    /* 矩陣圖與衝擊邊界表格 SVG 連結手勢 */
+    .matrix-chart svg a,
+    .matrix-chart svg a *,
+    .section--tabulation svg a,
+    .section--tabulation svg a * {
+      cursor: pointer !important;
+    }
 
-/* Hovering span 1 (Governance) highlights ec-aspect */
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(1):hover ~ svg a.ec-aspect {
-    opacity: 1 !important;
-}
-/* Hovering span 2 (Environmental) highlights env-aspect */
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(2):hover ~ svg a.env-aspect {
-    opacity: 1 !important;
-}
-/* Hovering span 3 (Social) highlights social-aspect */
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(3):hover ~ svg a.social-aspect {
-    opacity: 1 !important;
-}
-/* Hovering span 4 (Potential) highlights issues-aspect */
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(4):hover ~ svg a.issues-aspect {
-    opacity: 1 !important;
-}
+    /* 衝擊邊界表格 SVG 連結 Hover 反饋（文字平滑變淡） */
+    .section--tabulation svg a {
+      transition: opacity 0.2s ease;
+    }
 
-/* Override legend bullet point colors to match new order */
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(1):before {
-    background-image: linear-gradient(to bottom, #859fd1 0%, #4985c6 100%) !important;
-}
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(2):before {
-    background-image: linear-gradient(to bottom, #6ccc74 0%, #1da637 100%) !important;
-}
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(3):before {
-    background-image: linear-gradient(to bottom, #ff9e45 0%, #ff7a00 100%) !important;
-}
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(4):before {
-    background-image: linear-gradient(to bottom, #B1B1B1 0%, #8A8A8A 100%) !important;
-}
+    .section--tabulation svg a:hover {
+      opacity: 0.6 !important;
+    }
 
-/* Default state: elements that are hovered themselves become 0.5 opacity */
-main.materiality-analysis .section--matrix .wrapper .matrix-chart svg a:hover {
-    opacity: 0.5 !important;
-}
+    /* Reset opacity of all text items when ANY span is hovered */
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:hover ~ svg a {
+      opacity: 0.2 !important;
+    }
 
-/* Add pointer cursor to spans */
-main.materiality-analysis .section--matrix .wrapper .matrix-chart span {
-    cursor: pointer;
-}
-</style>
+    /* Hovering span 1 (Governance) highlights ec-aspect */
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(1):hover ~ svg a.ec-aspect {
+      opacity: 1 !important;
+    }
+    /* Hovering span 2 (Environmental) highlights env-aspect */
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(2):hover ~ svg a.env-aspect {
+      opacity: 1 !important;
+    }
+    /* Hovering span 3 (Social) highlights social-aspect */
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(3):hover ~ svg a.social-aspect {
+      opacity: 1 !important;
+    }
+    /* Hovering span 4 (Potential) highlights issues-aspect */
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(4):hover ~ svg a.issues-aspect {
+      opacity: 1 !important;
+    }
+
+    /* Override legend bullet point colors to match new order */
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(1):before {
+      background-image: linear-gradient(to bottom, #859fd1 0%, #4985c6 100%) !important;
+    }
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(2):before {
+      background-image: linear-gradient(to bottom, #6ccc74 0%, #1da637 100%) !important;
+    }
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(3):before {
+      background-image: linear-gradient(to bottom, #ff9e45 0%, #ff7a00 100%) !important;
+    }
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span:nth-of-type(4):before {
+      background-image: linear-gradient(to bottom, #B1B1B1 0%, #8A8A8A 100%) !important;
+    }
+
+    /* Default state: elements that are hovered themselves become 0.5 opacity */
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart svg a:hover {
+      opacity: 0.5 !important;
+    }
+
+    /* Add pointer cursor to spans */
+    main.materiality-analysis .section--matrix .wrapper .matrix-chart span {
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 
